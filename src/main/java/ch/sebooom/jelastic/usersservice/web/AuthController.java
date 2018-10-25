@@ -2,6 +2,7 @@ package ch.sebooom.jelastic.usersservice.web;
 
 import ch.sebooom.jelastic.usersservice.domaine.User;
 import ch.sebooom.jelastic.usersservice.domaine.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+@Slf4j
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -21,6 +23,8 @@ public class AuthController {
     @PostMapping
     public ResponseEntity login(@Valid @RequestBody Login login){
         Boolean loginOk = userRepository.login(login.getLogin(),login.getPassword());
+
+        log.info("Login status : {}", loginOk);
 
         if(loginOk){
             return ResponseEntity.ok(new AuthResult(Boolean.TRUE));
